@@ -8,7 +8,7 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) {
-        //start timer
+       //call timer to  start
 
     }
     

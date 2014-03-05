@@ -1,4 +1,9 @@
-
+/**
+ * 
+ * 
+ * @author Brandon Martin
+ *
+ */
 public class Timer {
     
     //create timer

@@ -1,4 +1,9 @@
-
+/**
+ * 
+ * 
+ * @author Brandon Martin
+ *
+ */
 public class Scheduler {
     
     public void roundroubin() {
