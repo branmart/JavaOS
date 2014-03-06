@@ -6,7 +6,7 @@ import java.util.Observer;
  * @author Cody Shafer
  *
  */
-public class CPU extends Thread implements Observer {
+public class CPU implements Observer, Runnable {
 	
 	/**
 	 * Holds a reference to the current thread to be ran.
@@ -20,18 +20,6 @@ public class CPU extends Thread implements Observer {
 	 */
 	public CPU(){
 		the_scheduler = new Scheduler();
-	}
-	
-	/**
-	 * This is used to run the current thread.
-	 * @return
-	 */
-	public boolean ran(){
-		if(current_process != null){
-			current_process.run();
-			return true;
-		}
-		return false;
 	}
 	
 	/**
@@ -54,8 +42,14 @@ public class CPU extends Thread implements Observer {
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
+		// TODO 
 		
-		
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		//
 	}
 
 }

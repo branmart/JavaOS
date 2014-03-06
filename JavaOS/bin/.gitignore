@@ -4,3 +4,6 @@
 /Process.class
 /Scheduler.class
 /Timer.class
+/Producer.class
+/Consumer.class
+/SharedMemory.class
