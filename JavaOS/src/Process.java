@@ -1,9 +1,11 @@
 
-/**
- * 
- * @author codys_000
- *
- */
-public class Process {
-
-}
+	/**
+	 * 
+	 * @author cody
+	 *
+	 */
+	public abstract class Process {
+		
+		public abstract void run();
+		
+	}
