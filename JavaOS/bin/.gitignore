@@ -1,5 +1,7 @@
+/CPU.class
 /Main.class
+/Process.class
 /Scheduler.class
 /Timer.class
-/CPU.class
-/Process.class
+/IOThreads.class
+/IODevices.class
