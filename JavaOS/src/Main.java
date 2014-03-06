@@ -9,6 +9,7 @@ public class Main {
      */
     public static void main(String[] args) {
        //call timer to  start
+       //ask user which type of scheduler
 
     }
     

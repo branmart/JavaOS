@@ -6,15 +6,39 @@
  */
 public class Scheduler {
     
-    public void roundroubin() {
+    public boolean is_round_robin;
+    
+    public boolean is_priority;
+    
+    public boolean is_lottery;
+     
+    /**
+     * Sets round robin flag to true and all others to false
+     */
+    public void setRoundRobin() {
+        is_round_robin = true;
+        is_priority = false;
+        is_lottery = false;
         
     }
     
-    public void priority() {
+    /**
+     * Sets priority flag true and all others to false
+     */
+    public void setPriority() {
+        is_priority = true;
+        is_lottery = false;
+        is_round_robin = false;
         
     }
     
-    public void lottery() {
+    /**
+     * Set lottery flag true and all others to false
+     */
+    public void setLottery() {
+        is_lottery = true;
+        is_round_robin = false;
+        is_priority = false;
         
     }
 
