@@ -7,3 +7,6 @@
 /Producer.class
 /Consumer.class
 /SharedMemory.class
+/SegmentationException.class
+/Command.class
+/Process$State.class
