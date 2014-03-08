@@ -32,6 +32,7 @@ public class SharedMemory
 		}
 	}
 	
+//	TODO do something if the location is locked.
 	public void write(final int the_address, final int the_data) throws SegmentationException
 	{
 		if (validAddress(the_address))
