@@ -1,5 +1,8 @@
 
 public interface Command
 {
-	public void execute();
+	/**
+	 * @return The address of the next method.
+	 */
+	public int execute();
 }

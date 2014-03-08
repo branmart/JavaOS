@@ -5,18 +5,22 @@ import java.util.Observable;
 
 public abstract class Process extends Observable
 {
+	/**
+	 * This process' memory space. 
+	 */
 	private final Map<Integer, Command> my_commands = new HashMap<Integer, Command>();
 	
 	public enum State {RUNNING(), BLOCKED(), WAITING()};
-	
-	private final State my_state;
 	
 	private final int my_start;
 	
 	private final int my_end;
 	
+	private State my_state;
+
 	/**
-	 * The ints are this process' memory space. Make sure they are in order.
+	 * The ints are this process' memory space. Make sure they are in order or you 
+	 * are going to have a bad day:)
 	 * 
 	 * @param the_start The 'start' address of this process.
 	 * @param the_end The 'end' address of this process.
@@ -28,21 +32,23 @@ public abstract class Process extends Observable
 		my_start = the_start;
 		my_end = the_end;
 		my_state = the_state;
-		setUpCommands(the_start, the_end);
+		setUpCommands();
 	}
 	
-	public void run(final int the_address) throws SegmentationException
+	public int run(final int the_address) throws SegmentationException
 	{
 		if (my_state != State.BLOCKED)
 		{
 			if (my_commands.containsKey(the_address))
 			{
-				my_commands.get(the_address).execute();
+				return my_commands.get(the_address).execute();
 			}
 			{
 				throw new SegmentationException(the_address);
 			}
 		}
+		//If we get here it means we failed to run so we return the same address.
+		return the_address;
 	}
 	
 	public int getStartAddress()
@@ -55,6 +61,11 @@ public abstract class Process extends Observable
 		return my_end;
 	}
 	
+	public void setState(final State the_state)
+	{
+		my_state = the_state;
+	}
+	
 	protected void addCommand(final int the_address, final Command the_command)
 	{
 		if (my_commands.containsKey(the_address) && the_command != null)
@@ -62,6 +73,7 @@ public abstract class Process extends Observable
 			my_commands.put(the_address, the_command);
 		}
 	}
+	public abstract int getSize();
 	
-	protected abstract void setUpCommands(final int the_start, final int the_end);
+	protected abstract void setUpCommands();
 }
