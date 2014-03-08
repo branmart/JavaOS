@@ -69,8 +69,7 @@ public class Calculator extends Process
 			}
 		}
 		my_is_prime = true;
-		return getStartAddress() + 2;
-		
+		return getStartAddress() + 2;	
 	}
 	
 	//This will write to shared memory.
