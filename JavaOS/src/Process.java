@@ -66,6 +66,8 @@ public abstract class Process extends Observable
 		my_state = the_state;
 	}
 	
+	public abstract int getSize();
+	
 	protected void addCommand(final int the_address, final Command the_command)
 	{
 		if (my_commands.containsKey(the_address) && the_command != null)
@@ -73,7 +75,6 @@ public abstract class Process extends Observable
 			my_commands.put(the_address, the_command);
 		}
 	}
-	public abstract int getSize();
-	
+
 	protected abstract void setUpCommands();
 }
