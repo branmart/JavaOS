@@ -1,4 +1,5 @@
 
+@SuppressWarnings("serial")
 public class SegmentationException extends Exception
 {
 	private final int my_address;
