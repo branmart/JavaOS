@@ -12,7 +12,6 @@ public class Timer {
     public static void setStarted(boolean is_started) {
         is_started = true;
         
-        
     }
     
     
