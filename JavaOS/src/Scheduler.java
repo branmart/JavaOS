@@ -1,3 +1,5 @@
+import java.util.Observable;
+
 /**
  * 
  * 
@@ -11,6 +13,15 @@ public class Scheduler {
     public boolean is_priority;
     
     public boolean is_lottery;
+    
+    //TODO make a singleton
+    //TODO implement the method next process for the cpu switching
+    
+    public Process nextProcess(final Observable the_interrupt){
+    	//TODO make this switch proccess. if no switching return null;
+    	return null;
+    }
+
      
     /**
      * Sets round robin flag to true and all others to false
