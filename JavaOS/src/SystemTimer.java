@@ -31,8 +31,7 @@ public class SystemTimer extends Observable {
     
     
     public static void setStarted(boolean is_started) {
-        is_started = true;
-        
+        is_started = true;       
     }
     
     public void fireInterrupt() {
