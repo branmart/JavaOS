@@ -70,7 +70,10 @@ public class CPU extends Thread implements Observer {
 	public void run() {		
 		while(true){ //TODO not interrupted or observable 
 			try {
-				current_process.run(my_pc);
+				int check = current_process.run(my_pc);
+				if(check == -1){
+					//switch process maybe?
+				}
 				my_pc += 1;
 
 			} catch (SegmentationException e) {
