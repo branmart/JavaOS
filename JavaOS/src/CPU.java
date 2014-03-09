@@ -35,22 +35,14 @@ public class CPU extends Thread implements Observer {
 	}
 
 	/**
-	 * This is used to switch Thread.
-	 * @param new_thread
-	 */
-	public void switchThread(Process new_process){
-		current_process = new_process;
-	}
-
-	/**
 	 * Called when the cpu receives an interrupt. Asks the scheduler what
-	 * process is next and preforms the switch.
+	 * process is next and performs the switch.
 	 */
-	public void interrupt(){
-		Process next = the_scheduler.nextProcess();
-		current_process.wait();
-		current_process = next;
-		run();
+	private void interruptMethod(){
+	//	Process next = the_scheduler.nextProcess();
+	//	current_process.wait();
+	//	current_process = next;
+	//	run();
 		//TODO might not be needed anymore
 	}
 
@@ -75,9 +67,7 @@ public class CPU extends Thread implements Observer {
 	 * This is used to run the cpu. Runs the current process until interrupted.
 	 */
 	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		
+	public void run() {		
 		while(true){ //TODO not interrupted or observable 
 			try {
 				current_process.run(my_pc);
@@ -86,11 +76,12 @@ public class CPU extends Thread implements Observer {
 			} catch (SegmentationException e) {
 				// TODO Auto-generated catch block
 				//TODO should probably do something useful or something.
+				//Should call for switching process
 				e.printStackTrace();
 			} 
-			if(this.isInterrupted()){
-				interrupt();
-			}
+			//if(this.isInterrupted()){
+			//	interrupt();
+			//}
 
 		} 
 		

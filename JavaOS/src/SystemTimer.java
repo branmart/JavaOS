@@ -60,7 +60,7 @@ public class SystemTimer extends Observable {
         public void run() {
             setChanged();
             notifyObservers();
-            my_cpu.interrupt();
+            //my_cpu.interrupt();
         }
     }
 
