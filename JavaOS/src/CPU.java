@@ -6,17 +6,21 @@ import java.util.Observer;
  * @author Cody Shafer
  *
  */
-public class CPU implements Observer, Runnable {
+public class CPU extends Thread implements Observer {
 
 	/**
 	 * Holds a reference to the current thread to be ran.
 	 */
-	Process current_process;
+	private Process current_process;
 
-	Scheduler the_scheduler;
+	/**
+	 * A reference to the scheduler.
+	 */
+	private Scheduler the_scheduler;
 
-	SystemTimer the_timer;
-
+	/**
+	 * A holder for the Program Counter
+	 */
 	private int my_pc;
 
 
@@ -25,8 +29,9 @@ public class CPU implements Observer, Runnable {
 	 */
 	public CPU(){
 		the_scheduler = new Scheduler();
-		startTimer();
 		my_pc = 0; //TODO double check
+		new SystemTimer(this);
+		SystemTimer.setStarted(true);
 	}
 
 	/**
@@ -38,16 +43,21 @@ public class CPU implements Observer, Runnable {
 	}
 
 	/**
-	 * Called when the cpu receives an interrupt
+	 * Called when the cpu receives an interrupt. Asks the scheduler what
+	 * process is next and preforms the switch.
 	 */
 	public void interrupt(){
-		//Process next = the_scheduler.nextProcess();
-		//current_process.wait();
-		//current_process = next;
+		Process next = the_scheduler.nextProcess();
+		current_process.wait();
+		current_process = next;
 		run();
 		//TODO might not be needed anymore
 	}
 
+	/**
+	 * Override of the update method. Is used to be notified when there is an interrupt.
+	 * and then ask the scheduler what to do.
+	 */
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		Process next = the_scheduler.nextProcess(arg0);
@@ -61,22 +71,31 @@ public class CPU implements Observer, Runnable {
 
 	}
 
+	/**
+	 * This is used to run the cpu. Runs the current process until interrupted.
+	 */
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
+		
 		while(true){ //TODO not interrupted or observable 
 			try {
 				current_process.run(my_pc);
+				my_pc += 1;
 
 			} catch (SegmentationException e) {
 				// TODO Auto-generated catch block
+				//TODO should probably do something useful or something.
 				e.printStackTrace();
+			} 
+			if(this.isInterrupted()){
+				interrupt();
 			}
+
 		} 
+		
 	}
 
-	private void startTimer(){
-		the_timer = new SystemTimer();
-	}
+
 
 }

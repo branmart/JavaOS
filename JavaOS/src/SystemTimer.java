@@ -29,6 +29,12 @@ public class SystemTimer extends Observable {
      */
     private int my_time_rate = 1000;
     
+    private CPU my_cpu;
+    
+    public SystemTimer(final CPU the_cpu){
+    	my_cpu = the_cpu;
+    }
+    
     
     public static void setStarted(boolean is_started) {
         is_started = true;       
@@ -54,6 +60,7 @@ public class SystemTimer extends Observable {
         public void run() {
             setChanged();
             notifyObservers();
+            my_cpu.interrupt();
         }
     }
 
