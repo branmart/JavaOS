@@ -17,6 +17,8 @@ public abstract class Process extends Observable
 	private final int my_end;
 	
 	private State my_state;
+	
+	private int my_pc;
 
 	/**
 	 * The ints are this process' memory space. Make sure they are in order or you 
@@ -33,6 +35,7 @@ public abstract class Process extends Observable
 		my_end = the_end;
 		my_state = the_state;
 		setUpCommands();
+		my_pc = 0;
 	}
 	
 	public int run(final int the_address) throws SegmentationException
@@ -77,4 +80,12 @@ public abstract class Process extends Observable
 	}
 
 	protected abstract void setUpCommands();
+	
+	public void setPc(final int the_pc){
+		my_pc = the_pc; 
+	}
+	
+	public int getPc(){
+		return my_pc;
+	}
 }

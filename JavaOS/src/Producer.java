@@ -33,6 +33,8 @@ public class Producer extends Process
 
 	private int waitForInput()
 	{
+		//TODO tell cpu i need keyboard input.
+		//TODO block
 		//TODO Wait for keyboard input.
 		return getStartAddress() + 1;
 	}
