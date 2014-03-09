@@ -1,3 +1,4 @@
+import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
 import java.util.Queue;
@@ -42,11 +43,21 @@ public class Scheduler {
     //TODO make a singleton
     //TODO implement the method next process for the cpu switching
     
+    /**
+     * Constructor
+     */
+    public Scheduler(Queue<Process> process) {
+        my_process_q = process;
+    }
+    
+    
+    
     public Process nextProcess(final Observable the_interrupt){
     	//TODO make this tell which process is next process. if no switching return null;
     	return null;
     }
 
+    
      
     /**
      * Sets round robin flag to true and all others to false
@@ -85,8 +96,12 @@ public class Scheduler {
      * Implementation of Round Robin
      */
     private void roundRobin() {
-        Process current_processing_job = my_process_q.element(); //current job
-        
+        Process current_processing_job = my_process_q.element(); //puts current job in current job
+        int num_jobs = my_process_q.size();
+        int curr_time = 0;
+        int count = 0;
+        int quantum = 4;
+
         /**
          * makes it run forever
          */
