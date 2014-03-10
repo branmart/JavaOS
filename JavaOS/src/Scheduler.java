@@ -2,6 +2,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
 import java.util.Queue;
+import java.util.Random;
 
 /**
  * 
@@ -37,14 +38,16 @@ public class Scheduler {
      */
     List <Process> my_blocked_list;
 
-    
+    private int my_index;
     
     //TODO remove flags
     //TODO make a singleton
     //TODO implement the method next process for the cpu switching
     
     /**
-     * Constructor
+     * Constructor, doesn't set the type of scheduling.
+     * 
+     * @param process a Queue of processes
      */
     public Scheduler(Queue<Process> process) {
         my_process_q = process;
@@ -62,8 +65,7 @@ public class Scheduler {
     /**
      * Sets round robin flag to true and all others to false
      */
-    public void setRoundRobin() {
-        is_round_robin = true;      
+    public void setRoundRobin() {      
         roundRobin();
     }
     
@@ -71,15 +73,14 @@ public class Scheduler {
      * Sets priority flag true and all others to false
      */
     public void setPriority() {
-        is_priority = true;
         priority();
     }
     
     /**
      * Set lottery flag true and all others to false
      */
-    public void setLottery() {       
-        is_lottery = true;        
+    public void setLottery() {    
+  
         lottery();
     }
     
@@ -88,7 +89,8 @@ public class Scheduler {
      * 
      */
     private void lottery() {
-        // TODO insert code   
+        Random rand = new Random();
+        rand.setSeed(System.currentTimeMillis());
     }
 
 
