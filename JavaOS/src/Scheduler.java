@@ -12,12 +12,6 @@ import java.util.Random;
  */
 public class Scheduler {
     
-    public boolean is_round_robin;
-    
-    public boolean is_priority;
-    
-    public boolean is_lottery;
-    
     /**
      * Queue of processes
      */
@@ -55,6 +49,12 @@ public class Scheduler {
     
     
     
+    /**
+     * Tells which process is the next process 
+     * 
+     * @param the_interrupt
+     * @return null if doesnt need to switch
+     */
     public Process nextProcess(final Observable the_interrupt){
     	//TODO make this tell which process is next process. if no switching return null;
     	return null;
@@ -127,6 +127,10 @@ public class Scheduler {
      */
     private void priority() {
         //TODO insert code
+        
+        //4 priorities
+        
+        
     }
 
 }
