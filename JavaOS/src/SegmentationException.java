@@ -8,7 +8,7 @@
 public class SegmentationException extends Exception
 {
 	private final int my_address;
-
+ 
 	public SegmentationException(final int the_address)
 	{
 		my_address = the_address;

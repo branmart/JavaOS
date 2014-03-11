@@ -11,7 +11,7 @@ public class CPU extends Thread implements Observer {
 	/**
 	 * Holds a reference to the current thread to be ran.
 	 */
-	private Process current_process;
+	private Process current_process; 
 
 	/**
 	 * A reference to the scheduler.
@@ -55,9 +55,10 @@ public class CPU extends Thread implements Observer {
 		Process next = the_scheduler.nextProcess(arg0);
 		//stop current process?
 		if(next != null){
-			current_process.setPc(my_pc);
-			current_process = next;
-			my_pc = current_process.getPc();
+//			TODO process pc is now handled in the process.
+//			current_process.setPc(my_pc);
+//			current_process = next;
+//			my_pc = current_process.getPc();
 			//TODO run next process again?
 		}
 
@@ -89,7 +90,31 @@ public class CPU extends Thread implements Observer {
 		} 
 		
 	}
+	
+/*
+ * *************
+ * System calls*
+ * *************
+ */
 
-
-
+	public int readMemory(final Process the_process, final int the_address) throws SegmentationException, MutexLockedException
+	{
+//		TODO this is most likely empty memory at the moment.
+		return SharedMemory.getInstance().read(the_process, the_address);
+	}
+	
+	public void writeMemory(final Process the_process, final int the_address, final int the_data) throws SegmentationException, MutexLockedException
+	{
+		SharedMemory.getInstance().write(the_process, the_address, the_data);
+	}
+	
+	public void lockMemory(final Process the_process, final int the_address) throws SegmentationException, MutexLockedException
+	{
+		SharedMemory.getInstance().lock(the_process, the_address);
+	}
+	
+	public void unlockMemory(final Process the_process, final int the_address) throws SegmentationException, MutexLockedException
+	{
+		SharedMemory.getInstance().unlock(the_process, the_address);
+	}
 }

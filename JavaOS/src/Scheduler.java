@@ -13,7 +13,7 @@ import java.util.Random;
 public class Scheduler {
     
     /**
-     * Queue of processes
+     * Queue of processes 
      */
     Queue<Process> my_process_q;
     

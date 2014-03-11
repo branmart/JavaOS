@@ -1,91 +1,111 @@
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Observable;
+import java.util.Observer;
 
 
-public abstract class Process extends Observable
+public abstract class Process implements Observer
 {
 	/**
 	 * This process' memory space. 
 	 */
-	private final Map<Integer, Command> my_commands = new HashMap<Integer, Command>();
+	private final Command[] my_instructions;
 	
 	public enum State {RUNNING(), BLOCKED(), WAITING()};
-	
-	private final int my_start;
-	
-	private final int my_end;
-	
+	 
 	private State my_state;
 	
-	private int my_pc;
+	private int my_pc = 0;
+	
+//	So this process knows where to make its calls.
+	private final CPU my_cpu;
 
+	private final int my_memory_location;
+	
+
+//	TODO keeping it simple. A process may only read or write in one location.
 	/**
 	 * The ints are this process' memory space. Make sure they are in order or you 
 	 * are going to have a bad day:)
 	 * 
-	 * @param the_start The 'start' address of this process.
-	 * @param the_end The 'end' address of this process.
-	 * @param the_state Current state of this process.
+	 * @param the_memory_address The location this process can read or write to.
 	 */
-	public Process(final int the_start, final int the_end, final State the_state)
+	public Process(final CPU the_cpu, final int the_memory_location)
 	{
 		super();
-		my_start = the_start;
-		my_end = the_end;
-		my_state = the_state;
-		setUpCommands();
+		my_cpu = the_cpu;
+		my_memory_location = the_memory_location;
+		my_instructions = getInstructions();
+		my_state = State.WAITING;
 		my_pc = 0;
 	}
 	
-	public int run(final int the_address) throws SegmentationException
+	public void nextInstruction(final int the_address) throws SegmentationException
 	{
-		if (my_state != State.BLOCKED)
+		if (my_state != State.BLOCKED && my_pc < my_instructions.length)
 		{
-			if (my_commands.containsKey(the_address))
-			{
-				return my_commands.get(the_address).execute();
-			}
-			{
-				throw new SegmentationException(the_address);
-			}
+			my_state = State.RUNNING;
+//			The individual commands are responsible for incrementing the pc.
+			my_instructions[my_pc].execute();
+			my_state = State.WAITING;
 		}
-		//If we get here it means we failed to run so we return the same address.
-		return the_address;
 	}
 	
-	public int getStartAddress()
+	public int getInstructionCount()
 	{
-		return my_start;
+		return my_instructions.length;
 	}
 	
-	public int getEndAddress()
+	public void update(final Observable the_obs, final Object the_condition)
 	{
-		return my_end;
+//		TODO make sure process that locks doesnt get blocked.
+		if (the_condition != null && the_condition.getClass() == Boolean.class && !the_obs.equals(this))
+		{
+			//Can not be running because the other thread that locked the mutex is running.
+			boolean is_locked = (Boolean) the_condition;
+			my_state = is_locked ? State.BLOCKED : State.WAITING;
+		}
+	}
+
+	public State getState()
+	{
+		return my_state;
 	}
 	
+//	TODO not sure if this really needs to be public. If we do it right the process will take 
+//	care of setting the state.
 	public void setState(final State the_state)
 	{
 		my_state = the_state;
 	}
 	
-	public abstract int getSize();
-	
-	protected void addCommand(final int the_address, final Command the_command)
+	protected CPU getCPU()
 	{
-		if (my_commands.containsKey(the_address) && the_command != null)
-		{
-			my_commands.put(the_address, the_command);
-		}
-	}
-
-	protected abstract void setUpCommands();
-	
-	public void setPc(final int the_pc){
-		my_pc = the_pc; 
+		return my_cpu;
 	}
 	
-	public int getPc(){
+	protected int getMemoryLocation()
+	{
+		return my_memory_location;
+	}
+	
+	protected void lockMemory() throws SegmentationException, MutexLockedException
+	{
+		getCPU().lockMemory(this, getMemoryLocation());
+	}
+	
+	protected void unlockMemory() throws SegmentationException, MutexLockedException
+	{
+		getCPU().unlockMemory(this, getMemoryLocation());
+	}
+	
+	protected int getPC()
+	{
 		return my_pc;
 	}
+	
+	protected void setPC(final int the_pc)
+	{
+		my_pc = the_pc;
+	}
+
+	protected abstract Command[] getInstructions();
 }

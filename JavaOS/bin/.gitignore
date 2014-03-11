@@ -18,3 +18,5 @@
 /SystemTimer$TimeTask.class
 /SystemTimer.class
 /BlockedException.class
+/Mutex.class
+/MutexLockedException.class

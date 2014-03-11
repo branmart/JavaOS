@@ -9,7 +9,7 @@ public class Consumer extends Process{
 	
 	public void run() {
 		// TODO Auto-generated method stub
-		
+		 
 	}
 
 

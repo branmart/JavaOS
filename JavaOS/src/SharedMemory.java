@@ -5,63 +5,84 @@ public class SharedMemory
 {
 	private static SharedMemory ME = null;
 	
-	private static final int CAPACITY = 10000;
-	
 	final int[] my_data;
 	
-	final boolean[] my_locks;
+	final Mutex[] my_locks; 
 	
 //	Singleton so we don't have to worry about multiple shared memories running around.
-	protected SharedMemory(final int the_cap)
+	protected SharedMemory(final Process[] the_producers, final Process[] the_consumers)
 	{
-		my_locks = new boolean[the_cap];
-		my_data = new int[the_cap];
-		Arrays.fill(my_locks, false);
+		my_locks = new Mutex[the_producers.length];
+		my_data = new int[the_producers.length];
 		Arrays.fill(my_data, 0);
-	}
-	
-	public int read(final int the_address) throws SegmentationException
-	{
-		if (validAddress(the_address))
+		for (int i = 0; i < the_producers.length; i++)
 		{
-			return my_data[the_address];
-		}
-		else
-		{
-			throw new SegmentationException(the_address);
+			final Mutex m = new Mutex();
+			m.addObserver(the_producers[i]);
+			m.addObserver(the_consumers[i]);
+			my_locks[i] = m;
 		}
 	}
 	
-//	TODO do something if the location is locked.
-	public void write(final int the_address, final int the_data) throws SegmentationException
+
+//	In theory each process gets one memory slot so we shouldnt have to specify address but better safe than sorry.
+	public int read(final Process the_process, final int the_address) throws SegmentationException, MutexLockedException
 	{
-		if (validAddress(the_address))
-		{
-			my_data[the_address] = the_data;
-		}
-		else
-		{
-			throw new SegmentationException(the_address);
-		}
+		if (!validAddress(the_address)){throw new SegmentationException(the_address);};
+		//can only read if it process has the lock or it is unlocked
+		if (my_locks[the_address].isLocked() && !my_locks[the_address].hasLock(the_process)){throw new MutexLockedException();}
+		final int data = my_data[the_address];
+		return data;
 	}
 	
-	public boolean isLocked(final int the_address) throws SegmentationException
+	/**
+	 * *******Careful, does not check mutexes. It is up to the thread to lock the memory.*****************
+	 * 
+	 * @param the_process
+	 * @param the_address
+	 * @param the_data
+	 * @return
+	 * @throws SegmentationException
+	 * @throws MutexLockedException
+	 */
+	
+//	*******Careful, does not check mutexes. It is up to the thread to lock the memory.*****************
+	public void write(final Process the_process, final int the_address, final int the_data) throws SegmentationException, MutexLockedException
 	{
-		if (validAddress(the_address))
-		{
-			return my_locks[the_address];
-		}
-		else 
-		{
-			throw new SegmentationException(the_address);
-		}
+		if (!validAddress(the_address)){throw new SegmentationException(the_address);};
+		my_data[the_address] = the_data;
+	}
+	
+	public void lock(final Process the_process, final int the_address) throws SegmentationException, MutexLockedException
+	{
+		if (!validAddress(the_address)){throw new SegmentationException(the_address);};
+		my_locks[the_address].lock(the_process);
+	}
+	
+	public void unlock(final Process the_process, final int the_address) throws SegmentationException, MutexLockedException
+	{
+		if (!validAddress(the_address)){throw new SegmentationException(the_address);};
+		my_locks[the_address].unlock(the_process);
 	}
 	
 	public static SharedMemory getInstance()
 	{
 		if (ME == null)
 		{
-			ME = new SharedMemory(CAPACITY);
+//			TODO Better call the other get instance first!
+			return getInstance(new Producer[0], new Calculator[0]);
+		}
+		else
+		{
+			return ME;
+		}
+	}
+	
+	public static SharedMemory getInstance(final Process[] the_producers, final Process[] the_consumers)
+	{
+		if (ME == null)
+		{
+			ME = new SharedMemory(the_producers, the_consumers);
 		}
 		return ME;
 	}

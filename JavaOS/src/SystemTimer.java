@@ -11,7 +11,7 @@ public class SystemTimer extends Observable {
     
     /**
      * Flag for starting the timer
-     */
+     */ 
     protected boolean is_started;
     
     /**

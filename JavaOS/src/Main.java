@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class Main {
 
     /**
-     * @param args
+     * @param args 
      */
     public static void main(String[] args) {
        //call timer to  start

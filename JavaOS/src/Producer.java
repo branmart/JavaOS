@@ -9,7 +9,7 @@ public class Producer extends Process
 	/**
 	 * Amount of memory this procedure occupies.
 	 */
-	private static final int MY_SIZE = 2;
+	private static final int MY_SIZE = 2; 
 
 	public Producer(final int the_start, final int the_end, final State the_state)
 	{
