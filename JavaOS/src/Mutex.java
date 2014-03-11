@@ -31,6 +31,7 @@ public class Mutex extends Observable
 	
 	public void unlock(final Process the_process) throws MutexLockedException
 	{
+//		Producer has to unlock the first time.
 		if (isLocked() && hasLock(the_process) || my_locking_process == null)
 		{
 			my_is_locked = false;

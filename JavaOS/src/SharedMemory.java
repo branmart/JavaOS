@@ -20,6 +20,14 @@ public class SharedMemory
 			final Mutex m = new Mutex();
 			m.addObserver(the_producers[i]);
 			m.addObserver(the_consumers[i]);
+			try
+			{
+				m.unlock(the_producers[i]);
+			} catch (MutexLockedException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			my_locks[i] = m;
 		}
 	}
@@ -72,10 +80,7 @@ public class SharedMemory
 //			TODO Better call the other get instance first!
 			return getInstance(new Producer[0], new Calculator[0]);
 		}
-		else
-		{
-			return ME;
-		}
+		return ME;
 	}
 	
 	public static SharedMemory getInstance(final Process[] the_producers, final Process[] the_consumers)
