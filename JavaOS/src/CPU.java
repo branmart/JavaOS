@@ -31,10 +31,10 @@ public class CPU extends Thread implements Observer {
 	 * process is next and performs the switch.
 	 */
 	private void interruptMethod(){
-	//	Process next = the_scheduler.nextProcess();
-	//	current_process.wait();
-	//	current_process = next;
-	//	run();
+		//	Process next = the_scheduler.nextProcess();
+		//	current_process.wait();
+		//	current_process = next;
+		//	run();
 		//TODO might not be needed anymore
 	}
 
@@ -44,7 +44,12 @@ public class CPU extends Thread implements Observer {
 	 */
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		Process next = the_scheduler.nextProcess();
+		Process next = null;
+		if(arg0.getClass().getName().equals("IODevices")){
+			next = the_scheduler.nextProcess(true);
+		} else {
+			next = the_scheduler.nextProcess();
+		}
 		//might need to tell scheduler either io or timer
 		if(next != null){
 			current_process = next;
@@ -53,10 +58,10 @@ public class CPU extends Thread implements Observer {
 		}
 
 	}
-	
+
 	//upon io, tell scheduler. may get nothing back
 
-	
+
 	//TODO fix run method
 	/**
 	 * This is used to run the cpu. Runs the current process until interrupted.
@@ -65,54 +70,43 @@ public class CPU extends Thread implements Observer {
 	public void run() {		
 		while(true){ //TODO not interrupted or observable 
 			try {
-				int check = current_process.run(my_pc);
-				if(check == -1){
-					//switch process maybe?
-				}
-				my_pc += 1;
-
+				current_process.nextInstruction(0); //TODO make sure correct method. also get a good number
 			} catch (SegmentationException e) {
 				// TODO Auto-generated catch block
-				//TODO should probably do something useful or something.
-				//Should call for switching process
 				e.printStackTrace();
-			} 
-			//if(this.isInterrupted()){
-			//	interrupt();
-			//}
-
+				//yeah should never get here.
+			}
 		} 
-		
 	}
-	
-/*
- * *************
- * System calls*
- * *************
- */
+
+	/*
+	 * *************
+	 * System calls*
+	 * *************
+	 */
 
 	//DOnt need to handle exceptions within reason
 	public int readMemory(final Process the_process, final int the_address) throws SegmentationException, MutexLockedException
 	{
-//		TODO this is most likely empty memory at the moment.
+		//		TODO this is most likely empty memory at the moment.
 		return SharedMemory.getInstance().read(the_process, the_address);
 	}
-	
+
 	public void writeMemory(final Process the_process, final int the_address, final int the_data) throws SegmentationException, MutexLockedException
 	{
 		SharedMemory.getInstance().write(the_process, the_address, the_data);
 	}
-	
+
 	public void lockMemory(final Process the_process, final int the_address) throws SegmentationException, MutexLockedException
 	{
 		SharedMemory.getInstance().lock(the_process, the_address);
 	}
-	
+
 	public void unlockMemory(final Process the_process, final int the_address) throws SegmentationException, MutexLockedException
 	{
 		SharedMemory.getInstance().unlock(the_process, the_address);
 	}
-	
-	
+
+
 	//TODO io
 }
