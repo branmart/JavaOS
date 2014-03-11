@@ -22,8 +22,6 @@ public class CPU extends Thread implements Observer {
 	 * Used to start up the CPU and create the scheduler. Could be passed a reference to the scheduler.
 	 */
 	public CPU(){
-		new SystemTimer(this);
-		SystemTimer.setStarted(true);
 
 	}
 
@@ -64,6 +62,12 @@ public class CPU extends Thread implements Observer {
 	
 	public void addScheduler(){
 		the_scheduler = Scheduler.getInstance();
+	}
+	
+	public void startTimer(){
+		SystemTimer timer = new SystemTimer(this);
+		timer.setStarted(true);
+		timer.fireInterrupt();
 	}
 
 	//upon io, tell scheduler. may get nothing back

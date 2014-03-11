@@ -22,23 +22,23 @@ public class Main {
 		//processes is also done at bottom.
 		//IO?
 		
-		
-		
-		System.out.println("Which type of scheduler would you like to use?");
-		System.out.println("(1) Round Robin");
-		System.out.println("(2) Priority");
-		System.out.println("(3) Lottery");
+//		
+//		
+//		System.out.println("Which type of scheduler would you like to use?");
+//		System.out.println("(1) Round Robin");
+//		System.out.println("(2) Priority");
+//		System.out.println("(3) Lottery");
 
 		Scanner s = new Scanner(System.in);
-		int input = s.nextInt();
-		if(input == 1) {
-			//set round robin
-		} else if(input == 2) {
-			//set priority
-		}else if(input == 3) {
-			//set lottery
-		}
-		
+//		int input = s.nextInt();
+//		if(input == 1) {
+//			//set round robin
+//		} else if(input == 2) {
+//			//set priority
+//		}else if(input == 3) {
+//			//set lottery
+//		}
+//		
 		System.out.println("How many Procedure/consumer pairs would you like?\n");
 		int pair = s.nextInt();
 		s.close();
@@ -61,6 +61,7 @@ public class Main {
 		
 		Scheduler.getInstance(processes);
 		cpu.addScheduler();
+		cpu.startTimer();
 		cpu.start();
 
 

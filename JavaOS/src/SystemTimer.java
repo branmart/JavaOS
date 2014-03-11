@@ -44,6 +44,7 @@ public class SystemTimer extends Observable {
         
         //makes sure is_started flag is true
         if(is_started) {
+        	my_timer = new Timer();
             //sets the timer to schedule a new task every second
             my_timer.schedule(new TimeTask(), my_initial_delay, my_time_rate);
         }  

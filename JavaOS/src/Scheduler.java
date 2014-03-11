@@ -51,6 +51,7 @@ public class Scheduler {
 	 * @return The next process. 
 	 */
 	public Process nextProcess(){
+		System.out.println("Switching process");
 		Process next = round_robin.get(the_current_process);
 		while(next.getState() == Process.State.BLOCKED){
 			the_current_process +=1;
