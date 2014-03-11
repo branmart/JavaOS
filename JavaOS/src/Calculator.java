@@ -68,6 +68,7 @@ public class Calculator extends Process
 			getCPU().writeMemory(this, getMemoryLocation(), my_data);
 			getCPU().unlockMemory(this, getMemoryLocation());
 			setPC(0);
+			setState(State.WAITING);
 		} catch (SegmentationException e)
 		{
 			// TODO Auto-generated catch block

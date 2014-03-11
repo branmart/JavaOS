@@ -6,6 +6,8 @@
  */
 public class Producer extends Process
 {
+	private int my_data = 0;
+
 	public Producer(final CPU the_cpu, final int the_memory_location)
 	{
 		super(the_cpu, the_memory_location);
@@ -23,17 +25,31 @@ public class Producer extends Process
 
 	private void waitForInput()
 	{
-		getCPU().getInput(this);
+		try
+		{
+			setPC(getPC() + 1);
+			my_data  = getCPU().getInput(this);
+		} catch (NoInputBuffered e)
+		{
+			setState(State.BLOCKED);
+		}
 		
 	}
 	
 	private void writeToMemory()
 	{
-		//lock memory
-		//TODO Put the value in memory for the calculator.
-		//release memory
-//		signal end of process
-		
+		try
+		{
+			getCPU().writeMemory(this, getMemoryLocation(), my_data);
+			setPC(0);
+		} catch (SegmentationException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MutexLockedException e)
+		{
+			setState(State.BLOCKED);
+		}
 	}
 	
 }

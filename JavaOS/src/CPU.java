@@ -107,8 +107,9 @@ public class CPU extends Thread implements Observer {
 		SharedMemory.getInstance().unlock(the_process, the_address);
 	}
 	
-	public int getInput(final Process the_process)
+	public int getInput(final Process the_process) throws NoInputBuffered
 	{
+		//TODO Should throw some kind of exception so that the process knows to block itself.
 		return 0;
 	}
 

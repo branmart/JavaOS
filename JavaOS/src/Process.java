@@ -38,14 +38,14 @@ public abstract class Process implements Observer
 		my_pc = 0;
 	}
 	
-	public void nextInstruction(final int the_address) throws SegmentationException
+	public void nextInstruction() throws SegmentationException
 	{
 		if (my_state != State.BLOCKED && my_pc < my_instructions.length)
 		{
 			my_state = State.RUNNING;
-//			The individual commands are responsible for incrementing the pc.
+//			The individual commands are responsible for incrementing the pc and
+//			and putting itself into the waiting state when it is done.
 			my_instructions[my_pc].execute();
-			my_state = State.WAITING;
 		}
 	}
 	
@@ -54,14 +54,17 @@ public abstract class Process implements Observer
 		return my_instructions.length;
 	}
 	
-	public void update(final Observable the_obs, final Object the_condition)
+	public void update(final Observable the_obs, final Object the_update)
 	{
-//		TODO make sure process that locks doesnt get blocked.
-		if (the_condition != null && the_condition.getClass() == Boolean.class && !the_obs.equals(this))
+//		TODO make sure process that locks doesnt get block itself.
+		final MutexUpdate update = (MutexUpdate) the_update;
+		if (update.isLocked() && !equals(update.getProcess()))
 		{
-			//Can not be running because the other thread that locked the mutex is running.
-			boolean is_locked = (Boolean) the_condition;
-			my_state = is_locked ? State.BLOCKED : State.WAITING;
+			my_state = State.BLOCKED;
+		}
+		else if (!update.isLocked())
+		{
+			my_state = State.WAITING;
 		}
 	}
 
@@ -107,7 +110,7 @@ public abstract class Process implements Observer
 		my_pc = the_pc;
 	}
 	
-	protected int getInput()
+	protected int getInput() throws NoInputBuffered
 	{
 		return getCPU().getInput(this);
 	}
