@@ -68,9 +68,12 @@ public class CPU extends Thread implements Observer {
 	 */
 	@Override
 	public void run() {		
+		if(current_process == null){
+			the_scheduler.nextProcess();
+		}
 		while(true){ //TODO not interrupted or observable 
 			try {
-				current_process.nextInstruction(0); //TODO make sure correct method. also get a good number
+				current_process.nextInstruction();
 			} catch (SegmentationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -106,10 +109,12 @@ public class CPU extends Thread implements Observer {
 	{
 		SharedMemory.getInstance().unlock(the_process, the_address);
 	}
-	
+
 	public int getInput(final Process the_process) throws NoInputBuffered
 	{
 		//TODO Should throw some kind of exception so that the process knows to block itself.
+		//isn't the noInputBuffered the kind of exception that we need to throw?
+		//TODO needs the input to be added to shared memory in order for us to call something
 		return 0;
 	}
 
