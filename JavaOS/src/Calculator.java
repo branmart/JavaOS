@@ -31,7 +31,10 @@ public class Calculator extends Process
 //			TODO I think that once it blocks itself it will recieve two updates before it can run again.
 //			one when the producer locks the memory, in which case process remains blocked. And then 
 //			again once the producer unlocks, signaling that it has put something in memory.
-			my_data = getCPU().readMemory(this, this.getMemoryLocation());
+			getCPU().lockMemory(this, this.getMemoryLocation());
+			my_data = getCPU().readMemory(this, getMemoryLocation());
+			setPC(getPC() + 1);
+//			If the memory is locked it will block itself. 
 			if (my_data < 1)
 			{
 				setState(State.BLOCKED);
@@ -53,14 +56,18 @@ public class Calculator extends Process
 	 */
 	private void decrement()
 	{
-			my_data--;
+		my_data--;
+		setPC(getPC() + 1);
 	}
-	
-	private void lockMutex()
+
+	//This will write to shared memory.
+	private void writeToOutput()
 	{
 		try
 		{
-			lockMemory();
+			getCPU().writeMemory(this, getMemoryLocation(), my_data);
+			getCPU().unlockMemory(this, getMemoryLocation());
+			setPC(0);
 		} catch (SegmentationException e)
 		{
 			// TODO Auto-generated catch block
@@ -70,11 +77,5 @@ public class Calculator extends Process
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-
-	//This will write to shared memory.
-	private void writeToOutput()
-	{
-		
 	}
 }

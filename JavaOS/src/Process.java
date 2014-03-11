@@ -106,6 +106,11 @@ public abstract class Process implements Observer
 	{
 		my_pc = the_pc;
 	}
+	
+	protected int getInput()
+	{
+		return getCPU().getInput(this);
+	}
 
 	protected abstract Command[] getInstructions();
 }

@@ -6,46 +6,34 @@
  */
 public class Producer extends Process
 {
-	/**
-	 * Amount of memory this procedure occupies.
-	 */
-	private static final int MY_SIZE = 2; 
-
-	public Producer(final int the_start, final int the_end, final State the_state)
+	public Producer(final CPU the_cpu, final int the_memory_location)
 	{
-		super(the_start, the_end, the_state);
+		super(the_cpu, the_memory_location);
 	}
 
 	@Override
-	public int getSize()
+	protected Command[] getInstructions()
 	{
-		return MY_SIZE;
+		final Command wait = new Command(){public void execute(){waitForInput();}};
+		final Command write = new Command(){public void execute(){writeToMemory();}};
+		final Command[] commands = {wait, write};
+		return commands;
+		
 	}
 
-	@Override
-	protected void setUpCommands()
+	private void waitForInput()
 	{
-		final Command wait = new Command(){public int execute(){return waitForInput();}};
-		final Command write = new Command(){public int execute(){return writeToMemory();}};
-		addCommand(getStartAddress(), wait);
-		addCommand(getEndAddress() + 1, write);		
-	}
-
-	private int waitForInput()
-	{
-		//TODO tell cpu i need keyboard input.
-		//TODO block
-		//TODO Wait for keyboard input.
-		return getStartAddress() + 1;
+		getCPU().getInput(this);
+		
 	}
 	
-	private int writeToMemory()
+	private void writeToMemory()
 	{
 		//lock memory
 		//TODO Put the value in memory for the calculator.
 		//release memory
 //		signal end of process
-		return -1;
+		
 	}
 	
 }

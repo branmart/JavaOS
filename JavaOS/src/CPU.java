@@ -106,6 +106,11 @@ public class CPU extends Thread implements Observer {
 	{
 		SharedMemory.getInstance().unlock(the_process, the_address);
 	}
+	
+	public int getInput(final Process the_process)
+	{
+		return 0;
+	}
 
 
 	//TODO io
