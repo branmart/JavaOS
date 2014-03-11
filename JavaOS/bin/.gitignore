@@ -1,3 +1,4 @@
+/BlockedException.class
 /CPU.class
 /Calculator$1.class
 /Calculator$2.class
@@ -7,16 +8,13 @@
 /Consumer.class
 /IODevices.class
 /Main.class
+/Mutex.class
+/MutexLockedException.class
 /Process$State.class
 /Process.class
-/Producer$1.class
-/Producer$2.class
 /Producer.class
 /Scheduler.class
 /SegmentationException.class
 /SharedMemory.class
 /SystemTimer$TimeTask.class
 /SystemTimer.class
-/BlockedException.class
-/Mutex.class
-/MutexLockedException.class

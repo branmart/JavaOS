@@ -8,16 +8,19 @@ import java.util.Observable;
  */
 public class Mutex extends Observable
 {
-	private Process my_locking_process;
+	private Process my_locking_process = null;
 	
 	private boolean my_is_locked = true;
 	
+	
+//	
 	public void lock(final Process the_process) throws MutexLockedException
 	{
 		//TODO dont update if already locked
 		if (!isLocked())
 		{
 			my_is_locked = true;
+			my_locking_process = the_process;
 			notifyProcesses();
 		}
 		else if (!hasLock(the_process))
@@ -28,7 +31,7 @@ public class Mutex extends Observable
 	
 	public void unlock(final Process the_process) throws MutexLockedException
 	{
-		if (isLocked() && hasLock(the_process))
+		if (isLocked() && hasLock(the_process) || my_locking_process == null)
 		{
 			my_is_locked = false;
 			my_locking_process = null;

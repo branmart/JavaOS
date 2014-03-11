@@ -72,7 +72,6 @@ public class Calculator extends Process
 		}
 	}
 
-	
 	//This will write to shared memory.
 	private void writeToOutput()
 	{
