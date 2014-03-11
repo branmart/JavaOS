@@ -2,17 +2,21 @@ import java.util.Observable;
 
 /**
  * A mutex is responsible for one memory location. If a process tries to lock
- * an already locked mutex, that process is blocked.
+ * an already locked mutex, that process is blocked. A mutex is created with 
+ * already locked with a producer owning the key.
  * @author User
  * 
  */
 public class Mutex extends Observable
 {
-	private Process my_locking_process = null;
+	private Process my_locking_process;
 	
 	private boolean my_is_locked = true;
 	
-	
+	public Mutex(final Process the_proc)
+	{
+		my_locking_process = the_proc;
+	}
 //	
 	public void lock(final Process the_process) throws MutexLockedException
 	{

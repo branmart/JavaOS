@@ -17,17 +17,9 @@ public class SharedMemory
 		Arrays.fill(my_data, 0);
 		for (int i = 0; i < the_producers.length; i++)
 		{
-			final Mutex m = new Mutex();
+			final Mutex m = new Mutex(the_producers[i]);
 			m.addObserver(the_producers[i]);
 			m.addObserver(the_consumers[i]);
-			try
-			{
-				m.unlock(the_producers[i]);
-			} catch (MutexLockedException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			my_locks[i] = m;
 		}
 	}
