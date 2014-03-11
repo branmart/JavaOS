@@ -52,14 +52,20 @@ public class Scheduler {
 	 */
 	public Process nextProcess(){
 		System.out.println("Switching process");
+		System.out.println(the_current_process);
+		the_current_process +=1;
+		if(the_current_process >= round_robin.size()){
+			the_current_process = 0;
+		}
 		Process next = round_robin.get(the_current_process);
-		while(next.getState() == Process.State.BLOCKED){
+		while(next.getState() != Process.State.WAITING){
 			the_current_process +=1;
 			if(the_current_process >= round_robin.size()){
 				the_current_process = 0;
 			}
 			next = round_robin.get(the_current_process);
 		}
+		System.out.println(next);
 		return next;
 	}
 	

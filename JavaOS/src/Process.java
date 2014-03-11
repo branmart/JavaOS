@@ -1,5 +1,6 @@
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Random;
 
 
 public abstract class Process implements Observer
@@ -15,7 +16,7 @@ public abstract class Process implements Observer
 	
 	private int my_pc = 0;
 	
-	private long uniqueID = System.currentTimeMillis();
+	private int uniqueID = 0 ;
 	
 //	So this process knows where to make its calls.
 	private final CPU my_cpu;
@@ -38,6 +39,9 @@ public abstract class Process implements Observer
 		my_instructions = getInstructions();
 		my_state = State.WAITING;
 		my_pc = 0;
+		
+		Random rand = new Random();
+		uniqueID = rand.nextInt(1000);
 	}
 	
 	public void nextInstruction() throws SegmentationException
