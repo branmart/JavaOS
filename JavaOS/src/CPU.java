@@ -16,20 +16,12 @@ public class CPU extends Thread implements Observer {
 	/**
 	 * A reference to the scheduler.
 	 */
-	private Scheduler the_scheduler;
-
-	/**
-	 * A holder for the Program Counter
-	 */
-	private int my_pc;
-
+	private static Scheduler the_scheduler = Scheduler.getInstance();
 
 	/**
 	 * Used to start up the CPU and create the scheduler. Could be passed a reference to the scheduler.
 	 */
 	public CPU(){
-		the_scheduler = new Scheduler();
-		my_pc = 0; //TODO double check
 		new SystemTimer(this);
 		SystemTimer.setStarted(true);
 	}
@@ -52,18 +44,20 @@ public class CPU extends Thread implements Observer {
 	 */
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		Process next = the_scheduler.nextProcess(arg0);
-		//stop current process?
+		Process next = the_scheduler.nextProcess();
+		//might need to tell scheduler either io or timer
 		if(next != null){
-//			TODO process pc is now handled in the process.
-//			current_process.setPc(my_pc);
-//			current_process = next;
-//			my_pc = current_process.getPc();
-			//TODO run next process again?
+			current_process = next;
+		} else{
+			//do nothing i think.
 		}
 
 	}
+	
+	//upon io, tell scheduler. may get nothing back
 
+	
+	//TODO fix run method
 	/**
 	 * This is used to run the cpu. Runs the current process until interrupted.
 	 */
@@ -97,6 +91,7 @@ public class CPU extends Thread implements Observer {
  * *************
  */
 
+	//DOnt need to handle exceptions within reason
 	public int readMemory(final Process the_process, final int the_address) throws SegmentationException, MutexLockedException
 	{
 //		TODO this is most likely empty memory at the moment.
@@ -117,4 +112,7 @@ public class CPU extends Thread implements Observer {
 	{
 		SharedMemory.getInstance().unlock(the_process, the_address);
 	}
+	
+	
+	//TODO io
 }
