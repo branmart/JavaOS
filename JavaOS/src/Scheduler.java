@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Queue;
@@ -13,11 +14,31 @@ import java.util.Random;
  */
 public class Scheduler {
 	
+	/**
+	 * The running order for the process. 
+	 */
 	List<Process> round_robin;
+	
+	/**
+	 * The current position in the list used to gather the next process.
+	 */
 	int the_current_process;
 	
+	/**
+	 * A queue used to keep track of who gets the io in what order.
+	 */
+	LinkedList<Integer> io_queue = new LinkedList<Integer>();
+	//fix queue
+	
+	/**
+	 * Reference to itself for singleton.
+	 */
 	private static Scheduler ME = null;
 	
+	/**
+	 * Constructor for singleton scheduler. Takes in the list of process to scheduler
+	 * @param the_process The list of processes.
+	 */
 	public Scheduler(List<Process> the_process){
 		round_robin = new ArrayList<Process>(the_process);
 		the_current_process = 0;
@@ -25,6 +46,10 @@ public class Scheduler {
 	
 	//under round robin next process goes thru list under it finds unlocked process.
 	
+	/**
+	 * Used to return the next proccess under round robin rules.
+	 * @return The next process. 
+	 */
 	public Process nextProcess(){
 		Process next = round_robin.get(the_current_process);
 		while(next.getState() == Process.State.BLOCKED){
@@ -37,6 +62,10 @@ public class Scheduler {
 		return next;
 	}
 	
+	/**
+	 * Get Instance for singleton. Can be called after the intial getInstance overloaded is called
+	 * @return The reference to the scheduler
+	 */
 	public static Scheduler getInstance(){
 		if(ME == null){
 			return getInstance(new ArrayList<Process>());
@@ -44,14 +73,41 @@ public class Scheduler {
 		return ME;
 	}
 	
+	/**
+	 * Overloaded getInstance method used upon first creation
+	 * @param the_process The processes needed to be scheduled
+	 * @return The reference to the scheduler
+	 */
 	public static Scheduler getInstance(List<Process> the_process){
 		if(ME == null){
 			ME = new Scheduler(the_process);
 		} 
 		return ME;
 	}
-}
 
+
+	/**
+	 * Method used to switch methods based upon an io interrupt.
+	 * @param io A cheap way to get an overloaded method.
+	 * @return The next process to be ran.
+	 */
+	public Process nextProcess(boolean io){
+		//this process for io 
+		if(!io_queue.isEmpty()){
+			round_robin.get((io_queue.removeFirst())).setState(Process.State.WAITING);
+		}
+		return nextProcess();
+	}
+
+	/**
+	 * Used to add a process to 
+	 * @param the_process
+	 */
+	public void waitIO(Process the_process){
+		io_queue.add(round_robin.indexOf(the_process));
+	}
+	
+}
 
 // upon getting passed either io, or timer figure out if needs to switch to blocked for io queue, keepgoing
 // or switch something else
