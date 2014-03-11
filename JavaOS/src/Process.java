@@ -116,4 +116,9 @@ public abstract class Process implements Observer
 	}
 
 	protected abstract Command[] getInstructions();
+	
+	@Override
+	public String toString(){
+		return "This is a process";
+	}
 }

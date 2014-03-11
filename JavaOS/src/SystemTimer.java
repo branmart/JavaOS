@@ -27,7 +27,7 @@ public class SystemTimer extends Observable {
     /**
      * The timer rate in milliseconds
      */
-    private int my_time_rate = 1000;
+    private int my_time_rate = 3000;
     
     private CPU my_cpu;
     

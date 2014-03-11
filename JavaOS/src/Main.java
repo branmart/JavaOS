@@ -9,8 +9,9 @@ public class Main {
 
 	/**
 	 * @param args 
+	 * @throws InterruptedException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args){
 		//call timer to  start
 		//ask user which type of scheduler
 
@@ -41,22 +42,26 @@ public class Main {
 		System.out.println("How many Procedure/consumer pairs would you like?\n");
 		int pair = s.nextInt();
 		s.close();
-		
+
 		Process[] procedures = new Process[pair];
 		Process[] consumers = new Process[pair];
 		for(int i = 0; i < pair; i++){
 			procedures[i] = new Producer(cpu, i);
-			consumers[i] = new Calculator(cpu,i);
+			consumers[i] = new Calculator(cpu, i);
+			
 		}
+		
 		SharedMemory.getInstance(procedures, consumers);
 		ArrayList<Process> processes = new ArrayList<Process>();
 		for(int i = 0; i < procedures.length; i++){
 			processes.add(procedures[i]);
 			processes.add(consumers[i]);
 		}
+
 		
 		Scheduler.getInstance(processes);
-		cpu.run();
+		cpu.addScheduler();
+		cpu.start();
 
 
 

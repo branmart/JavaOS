@@ -16,7 +16,7 @@ public class CPU extends Thread implements Observer {
 	/**
 	 * A reference to the scheduler.
 	 */
-	private static Scheduler the_scheduler = Scheduler.getInstance();
+	private static Scheduler the_scheduler;// = Scheduler.getInstance();
 
 	/**
 	 * Used to start up the CPU and create the scheduler. Could be passed a reference to the scheduler.
@@ -58,6 +58,11 @@ public class CPU extends Thread implements Observer {
 		}
 
 	}
+	
+	
+	public void addScheduler(){
+		the_scheduler = Scheduler.getInstance();
+	}
 
 	//upon io, tell scheduler. may get nothing back
 
@@ -68,8 +73,10 @@ public class CPU extends Thread implements Observer {
 	 */
 	@Override
 	public void run() {		
+
 		if(current_process == null){
-			the_scheduler.nextProcess();
+			current_process = the_scheduler.nextProcess();
+			System.out.println("A blaksdjf;laksdjfl;asdhf" + current_process);
 		}
 		while(true){ //TODO not interrupted or observable 
 			try {

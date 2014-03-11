@@ -40,8 +40,10 @@ public class Scheduler {
 	 * @param the_process The list of processes.
 	 */
 	public Scheduler(List<Process> the_process){
-		round_robin = new ArrayList<Process>(the_process);
+		round_robin = the_process;
 		the_current_process = 0;
+		System.out.println("AJGHSLKJEHFLKJASEHFKLSJEFHLKJESL");
+		System.out.println(round_robin.size());
 	}
 	
 	//under round robin next process goes thru list under it finds unlocked process.
@@ -51,6 +53,7 @@ public class Scheduler {
 	 * @return The next process. 
 	 */
 	public Process nextProcess(){
+		System.out.println(round_robin.size() + " things " + the_current_process);
 		Process next = round_robin.get(the_current_process);
 		while(next.getState() == Process.State.BLOCKED){
 			the_current_process +=1;
