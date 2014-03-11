@@ -24,6 +24,7 @@ public class CPU extends Thread implements Observer {
 	public CPU(){
 		new SystemTimer(this);
 		SystemTimer.setStarted(true);
+
 	}
 
 	/**
@@ -44,6 +45,7 @@ public class CPU extends Thread implements Observer {
 	 */
 	@Override
 	public void update(Observable arg0, Object arg1) {
+		System.out.println("CPU got updated");
 		Process next = null;
 		if(arg0.getClass().getName().equals("IODevices")){
 			next = the_scheduler.nextProcess(true);
@@ -76,11 +78,11 @@ public class CPU extends Thread implements Observer {
 
 		if(current_process == null){
 			current_process = the_scheduler.nextProcess();
-			System.out.println("A blaksdjf;laksdjfl;asdhf" + current_process);
 		}
 		while(true){ //TODO not interrupted or observable 
 			try {
 				current_process.nextInstruction();
+				//System.out.println("Its doing things");
 			} catch (SegmentationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -12,7 +12,7 @@ public class SystemTimer extends Observable {
     /**
      * Flag for starting the timer
      */ 
-    protected boolean is_started;
+    protected static  boolean is_started;
     
     /**
      * The timer object
@@ -36,7 +36,7 @@ public class SystemTimer extends Observable {
     }
     
     
-    public static void setStarted(boolean is_started) {
+    public static void setStarted(boolean is_start) {
         is_started = true;       
     }
     
@@ -58,6 +58,7 @@ public class SystemTimer extends Observable {
     class TimeTask extends TimerTask {
         //runs the timertask
         public void run() {
+        	System.out.println("Timer fired");
             setChanged();
             notifyObservers();
             //my_cpu.interrupt();
