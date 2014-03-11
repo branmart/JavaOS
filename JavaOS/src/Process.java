@@ -15,6 +15,8 @@ public abstract class Process implements Observer
 	
 	private int my_pc = 0;
 	
+	private long uniqueID = System.currentTimeMillis();
+	
 //	So this process knows where to make its calls.
 	private final CPU my_cpu;
 
@@ -119,6 +121,6 @@ public abstract class Process implements Observer
 	
 	@Override
 	public String toString(){
-		return "This is a process";
+		return "This is a process. Name is: " + uniqueID;
 	}
 }

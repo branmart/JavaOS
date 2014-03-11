@@ -56,16 +56,16 @@ public class CPU extends Thread implements Observer {
 		} else{
 			//do nothing i think.
 		}
-
 	}
-	
-	
+
+
 	public void addScheduler(){
 		the_scheduler = Scheduler.getInstance();
 	}
-	
+
 	public void startTimer(){
 		SystemTimer timer = new SystemTimer(this);
+		timer.addObserver(this);
 		timer.setStarted(true);
 		timer.fireInterrupt();
 	}
